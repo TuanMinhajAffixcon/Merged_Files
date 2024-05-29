@@ -143,7 +143,13 @@ if file_name is not None:
         
         merged_data['FullName'] = merged_data['FirstName'] +" "+ merged_data['SurName']
         
-        # st.write(merged_data)
+        desired_order = [
+        "ID","URN","Email","Record_SuppliedDate","Record_SuppliedJobNo",
+        "File_Name","Record_SuppliedClient_1","JobType","Remark","Campaign_Name",
+        "Email_Platform","Title","FirstName","SurName","FullName"]
+
+        # Reindex the DataFrame to match the desired column order
+        merged_data = merged_data.reindex(columns=desired_order)
         
         
         merged_data.to_csv('opened_merged_data.csv')
