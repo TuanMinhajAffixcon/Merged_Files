@@ -39,9 +39,12 @@ if file_name is not None:
                     try:
                         if filename.endswith('.csv'):
                             data = pd.read_csv(filepath, encoding='ISO-8859-1').fillna("")
+                            st.write("Success")
                             
                         elif filename.endswith('.xlsx'):
                             data = pd.read_excel(filepath)
+                            st.write("Success")
+                            
                     except Exception as e:
                         print(f"Error reading file: {filename}. Skipping...")
                         print(e)
