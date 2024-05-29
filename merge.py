@@ -46,8 +46,8 @@ if file_name is not None:
                             st.write("Success")
                             
                     except Exception as e:
-                        print(f"Error reading file: {filename}. Skipping...")
-                        print(e)
+                        st.write(f"Error reading file: {filename}. Skipping...")
+                        st.write(e)
                         continue
                     data['File_Name'] = filename
                     merged_data = pd.concat([merged_data, data], ignore_index=True)
@@ -155,7 +155,7 @@ if file_name is not None:
         merged_data = merged_data.reindex(columns=desired_order)
         
         
-        merged_data.to_csv('opened_merged_data.csv')
+        # merged_data.to_csv('opened_merged_data.csv')
 
         # Add a download button to download the generated CSV file
         st.download_button(
