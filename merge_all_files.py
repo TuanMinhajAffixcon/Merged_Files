@@ -35,12 +35,16 @@ if file_name is not None:
                             data.columns = data.columns.str.upper()
                             if 'EMAILADRESS' in data.columns and 'EMAILADDRESS' not in data.columns:
                                 data.rename(columns={'EMAILADRESS': 'EMAILADDRESS'}, inplace=True)
+                            if 'EMAIL' in data.columns and 'EMAILADDRESS' not in data.columns:
+                                data.rename(columns={'EMAIL': 'EMAILADDRESS'}, inplace=True)
                             data = data[["ID","URN","TITLE","FIRSTNAME","SURNAME","EMAILADDRESS"]]
                         elif filename.endswith('.xlsx'):
                             data = pd.read_excel(filepath)
                             data.columns = data.columns.str.upper()
                             if 'EMAILADRESS' in data.columns and 'EMAILADDRESS' not in data.columns:
                                 data.rename(columns={'EMAILADRESS': 'EMAILADDRESS'}, inplace=True)
+                            if 'EMAIL' in data.columns and 'EMAILADDRESS' not in data.columns:
+                                data.rename(columns={'EMAIL': 'EMAILADDRESS'}, inplace=True)
                             data = data[["ID","URN","TITLE","FIRSTNAME","SURNAME","EMAILADDRESS"]]
                     except Exception as e:
                         print(f"Error reading file: {filename}. Skipping...")
