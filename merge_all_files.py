@@ -33,10 +33,11 @@ if file_name is not None:
                         if filename.endswith('.csv'):
                             data = pd.read_csv(filepath, encoding='ISO-8859-1').fillna("")
                             data.columns = data.columns.str.upper()
+                            data = data[["ID","URN","TITLE","FIRSTNAME","SURNAME","EMAILADDRESS"]]
                         elif filename.endswith('.xlsx'):
                             data = pd.read_excel(filepath)
                             data.columns = data.columns.str.upper()
-                            
+                            data = data[["ID","URN","TITLE","FIRSTNAME","SURNAME","EMAILADDRESS"]]
                     except Exception as e:
                         print(f"Error reading file: {filename}. Skipping...")
                         print(e)
