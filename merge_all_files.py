@@ -21,6 +21,7 @@ if file_name is not None:
         with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
             # Extract the contents of the ZIP file to a temporary directory
             temp_dir = 'temp_extracted_files'
+            os.rmdir(temp_dir)
             zip_ref.extractall(temp_dir)
 
         merged_data = pd.DataFrame()
