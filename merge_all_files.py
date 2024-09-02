@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import zipfile
+import shutil
 
 uploaded_file = st.file_uploader("Upload ZIP file", type=["zip"])
 skip_rows = st.number_input("Enter the number of rows to skip:", min_value=0, step=1, value=0)
@@ -15,13 +16,17 @@ def download_csv(df, filename):
         file_name=f"{filename}.csv",
         mime='text/csv'
     )
+
+temp_dir = 'temp_extracted_files'
+if os.path.exists(temp_dir):
+    # Remove the folder and all its contents
+    shutil.rmtree(temp_dir)
     
 if file_name is not None:
     if uploaded_file is not None:
         with zipfile.ZipFile(uploaded_file, 'r') as zip_ref:
             # Extract the contents of the ZIP file to a temporary directory
-            temp_dir = 'temp_extracted_files'
-            os.rmdir(temp_dir)
+
             zip_ref.extractall(temp_dir)
 
         merged_data = pd.DataFrame()
@@ -48,7 +53,7 @@ if file_name is not None:
                     # st.write(data)
 
                     merged_data = pd.concat([merged_data, data], ignore_index=True)
-        # st.write(merged_data)
+        # st.write(merged_data.shape)
                     
 
         # Reset index starting from 1
