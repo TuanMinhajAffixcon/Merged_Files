@@ -4,6 +4,7 @@ import os
 import zipfile
 
 uploaded_file = st.file_uploader("Upload ZIP file", type=["zip"])
+skip_rows = st.number_input("Enter the number of rows to skip:", min_value=0, step=1, value=0)
 file_name=st.text_input("Enter file name:")
 
 def download_csv(df, filename):
@@ -31,30 +32,29 @@ if file_name is not None:
                     filepath = os.path.join(root, filename)
                     try:
                         if filename.endswith('.csv'):
-                            data = pd.read_csv(filepath, encoding='ISO-8859-1').fillna("")
-                            data.columns = data.columns.str.upper()
-                            if 'EMAILADRESS' in data.columns:
-                                data.rename(columns={'EMAILADRESS': 'EMAILADDRESS'}, inplace=True)
-                            if 'EMAIL' in data.columns:
-                                data.rename(columns={'EMAIL': 'EMAILADDRESS'}, inplace=True)
-                            data = data[["ID","URN","TITLE","FIRSTNAME","SURNAME","EMAILADDRESS"]]
+                            data = pd.read_csv(filepath, encoding='ISO-8859-1',skiprows = skip_rows).fillna("")
+
+
                         elif filename.endswith('.xlsx'):
                             data = pd.read_excel(filepath)
-                            data.columns = data.columns.str.upper()
-                            if 'EMAILADRESS' in data.columns:
-                                data.rename(columns={'EMAILADRESS': 'EMAILADDRESS'}, inplace=True)
-                            if 'EMAIL' in data.columns:
-                                data.rename(columns={'EMAIL': 'EMAILADDRESS'}, inplace=True)
-                            data = data[["ID","URN","TITLE","FIRSTNAME","SURNAME","EMAILADDRESS"]]
+
                     except Exception as e:
                         print(f"Error reading file: {filename}. Skipping...")
                         print(e)
                         continue
                     data['File_Name'] = filename
+
+                    # st.write(data)
+
                     merged_data = pd.concat([merged_data, data], ignore_index=True)
+        # st.write(merged_data)
+                    
 
         # Reset index starting from 1
         merged_data.index = merged_data.index + 1
+        merged_data['ID'] = range(1, len(merged_data) + 1)
+        merged_data = merged_data[['ID'] + [col for col in merged_data.columns if col != 'ID']]
+        # st.write(merged_data)
 
         # merged_data.to_csv('opened_merged_data.csv')
         download_csv(merged_data,file_name)
